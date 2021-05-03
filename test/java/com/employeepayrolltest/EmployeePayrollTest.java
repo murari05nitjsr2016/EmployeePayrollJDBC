@@ -9,10 +9,17 @@ import java.util.List;
 
 public class EmployeePayrollTest {
     @Test
-    public void givenEmployeePayrollInDB_WhenRetrived_ShouldMatchEmployeeCount() {
+    public void givenEmployeePayrollInDataWhenRetrived_ShouldMatchEmployeeCount() {
         EmployeeService employeeService = new EmployeeService();
         List<EmployeePayrollData> employeePayrollList = employeeService.readEmployeePayrollData(EmployeeService.IOService.DB_IO);
         Assertions.assertEquals(2, employeePayrollList.size());
     }
+    @Test
+    public void givenEmployeePayrollInDataWhenRetrived_ShouldMatchEmployeeCount2() {
+        EmployeeService employeeService = new EmployeeService();
+        List<EmployeePayrollData> employeePayrollList = employeeService.readEmployeePayrollData(EmployeeService.IOService.DB_IO);
+        Assertions.assertNotEquals(2, employeePayrollList.size());
+    }
+
 
 }
