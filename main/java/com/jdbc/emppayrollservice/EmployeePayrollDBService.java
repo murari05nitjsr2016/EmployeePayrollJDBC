@@ -4,27 +4,29 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeePayRollService {
+public class  EmployeePayrollDBService {
     static final String userName = "root";
     static final String passWord = "root";
     static final String jdbcURL = "jdbc:mysql://localhost:3306/payroll_service";
     public  static Connection connection;
     public static Statement statement;
 
-    public static  void loadAndEstablishConnectionWithDB()
-    {
-
+    public static  void loadJDBCDriver() throws SQLException {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Driver sucessfully Loaded");
             System.out.println("Connecting to the database: " + jdbcURL);
-            connection = DriverManager.getConnection(jdbcURL, userName, passWord);
-            System.out.println("Connected  successfully" + connection);
         } catch (ClassNotFoundException e) {
             System.out.println("driver not found in that path");
-        } catch (SQLException throwables) {
-            System.out.println("connection failed");
+
         }
+    }
+
+    public Connection getConnection() throws SQLException, SQLException {
+        System.out.println("Connecting to database:"+jdbcURL);
+        connection = DriverManager.getConnection(jdbcURL,userName,passWord);
+        System.out.println("Conneced successfully!!!!!! "+ connection);
+        return connection;
     }
 
     public static void createTableWithAttributes() throws SQLException {
@@ -48,19 +50,12 @@ public class EmployeePayRollService {
         pstmt.execute();
     }
 
-    public static void main(String[] args) throws SQLException {
-        System.out.println("welcome in employee payroll system");
-        insertRow();
-        readData();
-
-    }
-
-    public static  List<EmployeePayrollData> readData() {
-        loadAndEstablishConnectionWithDB();
+    public   List<EmployeePayrollData> readData() {
+        String retrieveQuery= "SELECT * FROM employee_payroll";
         List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
         try {
+            Connection connection = this.getConnection();
             Statement statement = connection.createStatement();
-            String retrieveQuery= "SELECT * FROM employee_payroll";
             ResultSet result = statement.executeQuery(retrieveQuery);
             while(result.next()) {
                 int id = result.getInt("id");
@@ -77,5 +72,10 @@ public class EmployeePayRollService {
         return employeePayrollList;
     }
 
+    public static void main(String[] args) throws SQLException {
+        System.out.println("welcome in employee payroll system");
+        new EmployeePayrollDBService().readData();
+
+    }
     }
 
