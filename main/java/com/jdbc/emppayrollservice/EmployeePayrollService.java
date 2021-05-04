@@ -8,7 +8,12 @@ public class EmployeePayrollService {
 
     private List<EmployeePayrollData> employeePayrollDataList;
     private EmployeePayrollService employeePayrollService;
+    private List<EmployeePayrollData> employeePayrollList;
     public EmployeePayrollService() {}
+    public EmployeePayrollService(List<EmployeePayrollData> employeePayrollList) {
+        this();
+        this.employeePayrollList = employeePayrollList;
+    }
 
     public List<EmployeePayrollData> readEmployeePayrollData(IOService ioService) {
         if(ioService.equals(IOService.DB_IO))
